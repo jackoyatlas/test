@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Go Cart Countdown</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="auth-wrapper auth-box">
+    <div class="auth-card">
+        <!-- LOGIN FORM -->
+        <div id="login-form">
+            <h2>Login</h2>
+            <input id="login-email" type="email" placeholder="Email">
+            <input id="login-password" type="password" placeholder="Password">
+            <button id="login-btn" class="primary-btn">Login</button>
+            <div style="margin-top:8px;">
+                <span id="forgot-link" class="link">Forgot Password?</span>
+            </div>
+            <div class="switch">
+                Don't have an account? <span id="to-signup" style="color: #00e5ff; cursor: pointer; font-weight: bold;">Sign Up</span>
+            </div>
+            <div id="auth-status" class="status"></div>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div id="signup-form" style="display:none;">
+            <h2>Sign Up</h2>
+            <input id="signup-email" type="email" placeholder="Email">
+            <input id="signup-password" type="password" placeholder="Password">
+            <button id="signup-btn" class="primary-btn">Sign Up</button>
+            <div class="switch">
+                Already have an account? <span id="to-login" style="color: #00e5ff; cursor: pointer; font-weight: bold;">Login</span>
+            </div>
+            <div id="signup-status" class="status"></div>
+        </div>
+
+        <!-- FORGOT PASSWORD FORM -->
+        <div id="forgot-form" style="display:none;">
+            <h2>Reset Password</h2>
+            <input id="forgot-email" type="email" placeholder="Email">
+            <button id="forgot-btn" class="primary-btn">Send Reset Email</button>
+            <div class="switch">
+                <span id="back-to-login" style="color: #00e5ff; cursor: pointer; font-weight: bold;">Back to Login</span>
+            </div>
+            <div id="forgot-status" class="status"></div>
+        </div>
+    </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+    <div class="container">
+        <div class="report-topbar-absolute">
+            <div class="report-card">
+                <form id="report-date-form" class="report-date-form">
+                    <div class="date-fields">
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date" name="start-date">
+                        <label for="end-date">End Date</label>
+                        <input type="date" id="end-date" name="end-date">
+                    </div>
+                    <button type="button" class="report-btn" onclick="showReportModal()" title="Generate Report" aria-label="Generate Report">
+                        <span class="report-icon">📊</span>
+                        <span class="report-text"> Generate Report</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <h1>Cart Countdown</h1>
+        <button class="add-cart" onclick="addCart()">➕ Add Go Cart</button>
+        <div id="timers"></div>
+        <button onclick="logout()" class="delete">Logout</button>
+    </div>
+</div>
+
+<!-- REPORT FORMAT MODAL -->
+<div id="reportModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>Choose Report Format</h2>
+        <p>Select the format you want to download:</p>
+        <div class="modal-buttons">
+            <button class="modal-btn pdf-choice" onclick="exportPDF(); closeReportModal()">📄 PDF</button>
+            <button class="modal-btn excel-choice" onclick="exportExcel(); closeReportModal()">📊 Excel</button>
+            <button class="modal-btn cancel-btn" onclick="closeReportModal()">❌ Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="auth.js"></script>
+<script type="module" src="app.js"></script>
+
+<!-- Auto-toggle icon-only for report button on small screens -->
+<script>
+    (function(){
+        const btn = document.querySelector('.report-btn');
+        if (!btn) return;
+        const THRESHOLD = 520;
+        function update() {
+            if (window.innerWidth <= THRESHOLD) btn.classList.add('icon-only');
+            else btn.classList.remove('icon-only');
+        }
+        window.addEventListener('resize', update);
+        document.addEventListener('DOMContentLoaded', update);
+        // also run immediately in case scripts load after DOMContentLoaded
+        update();
+    })();
+</script>
+
+</body>
+</html>
